@@ -1,0 +1,21 @@
+{
+  "name": "chatapplication",
+  "version": "1.0.0",
+  "description": "This is a chatApplication",
+  "license": "ISC",
+  "author": "Anjeet Singh",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build" : "tsc -b" ,
+    "start": "node ./dist/index.js",
+    "dev": "npm run build && npm run start"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@types/ws": "^8.18.1",
+    "ws": "^8.21.0"
+  }
+}
