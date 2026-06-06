@@ -1,39 +1,80 @@
-# Chat App Backend
+# ChatApp Backend
 
-A real-time chat backend built using Node.js, TypeScript, and WebSockets.
+A lightweight real-time chat server built using Node.js, TypeScript, and WebSockets.
 
 ## Features
 
-* Join chat rooms
-* Real-time messaging
-* Room-based message broadcasting
-* WebSocket communication
+* WebSocket server
+* Real-time communication
+* Room-based messaging
+* Multi-user support
+* TypeScript implementation
+* Lightweight architecture
 
 ## Tech Stack
 
 * Node.js
 * TypeScript
-* WebSocket (ws)
+* ws (WebSocket library)
+
+## Project Structure
+
+```bash
+src/
+├── index.ts
+└── types/
+```
 
 ## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/anjeetsingh7155/ChatAppBackend.git
+```
+
+Navigate to the project:
+
+```bash
+cd ChatAppBackend
+```
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-## Run the Server
+Start the development server:
 
 ```bash
 npm run dev
 ```
 
-Server runs on:
+Or build and run:
 
-```txt
-ws://localhost:5000
+```bash
+npm run build
+npm start
 ```
 
-## WebSocket Events
+## Server Configuration
+
+The WebSocket server runs on:
+
+```ts
+const wss = new WebSocketServer({
+  port: 8080,
+});
+```
+
+Server URL:
+
+```bash
+ws://localhost:8080
+```
+
+## Message Format
 
 ### Join Room
 
@@ -41,7 +82,7 @@ ws://localhost:5000
 {
   "type": "join",
   "payload": {
-    "roomId": "123"
+    "roomId": "red"
   }
 }
 ```
@@ -57,17 +98,28 @@ ws://localhost:5000
 }
 ```
 
-### Receive Message
+## How It Works
 
-```json
-{
-  "type": "chat",
-  "payload": {
-    "message": "Hello World"
-  }
-}
-```
+1. Client establishes a WebSocket connection.
+2. Client joins a room.
+3. Messages are sent to the server.
+4. Server identifies the sender's room.
+5. Message is broadcast to all users in the same room.
+
+## Future Improvements
+
+* Authentication and authorization
+* MongoDB integration
+* Message persistence
+* User profiles
+* Private messaging
+* Redis Pub/Sub
+* Horizontal scaling
+* Docker support
 
 ## Author
 
 Anjeet Singh
+
+GitHub:
+https://github.com/anjeetsingh7155
