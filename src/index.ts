@@ -1,88 +1,70 @@
 import { WebSocketServer, WebSocket } from "ws";
 
-const wss = new WebSocketServer({ port: 5000 });
+const wss = new WebSocketServer({
+    port: 8080
+});
 
 interface User {
-  socket: WebSocket;
-  room: string;
+    socket: WebSocket;
+    room: string;
 }
+
+interface JoinMessage {
+    type: "join";
+    payload: {
+        roomId: string;
+    };
+}
+
+interface ChatMessage {
+    type: "chat";
+    payload: {
+        message: string;
+    };
+}
+
+type Message = JoinMessage | ChatMessage;
 
 let allSockets: User[] = [];
 
 wss.on("connection", (socket) => {
-  console.log("User connected");
 
-  socket.on("message", (message) => {
-    try {
-      const parsedMessage = JSON.parse(message.toString());
+    socket.on("message", (message) => {
 
-      if (parsedMessage.type === "join") {
-        const roomId = parsedMessage.payload.roomId;
+        const parsedMessage =
+            JSON.parse(message.toString()) as Message;
 
-        const existingUser = allSockets.find(
-          (user) => user.socket === socket
-        );
+        if (parsedMessage.type === "join") {
 
-        if (existingUser) {
-          existingUser.room = roomId;
-        } else {
-          allSockets.push({
-            socket,
-            room: roomId,
-          });
+            allSockets.push({
+                socket,
+                room: parsedMessage.payload.roomId
+            });
         }
 
-        console.log(`User joined room ${roomId}`);
-      }
+        if (parsedMessage.type === "chat") {
 
-      if (parsedMessage.type === "chat") {
-        const currentUser = allSockets.find(
-          (user) => user.socket === socket
-        );
-
-        if (!currentUser) {
-          socket.send(
-            JSON.stringify({
-              error: "Please join a room first",
-            })
-          );
-          return;
-        }
-
-        const roomId = currentUser.room;
-
-        allSockets.forEach((user) => {
-          if (
-            user.room === roomId &&
-            user.socket.readyState === WebSocket.OPEN
-          ) {
-            user.socket.send(
-              JSON.stringify({
-                type: "chat",
-                payload: {
-                  message: parsedMessage.payload.message,
-                },
-              })
+            const currentUser = allSockets.find(
+                user => user.socket === socket
             );
-          }
-        });
-      }
-    } catch (error) {
-      socket.send(
-        JSON.stringify({
-          error: "Invalid message format",
-        })
-      );
-    }
-  });
 
-  socket.on("close", () => {
-    allSockets = allSockets.filter(
-      (user) => user.socket !== socket
-    );
+            if (!currentUser) return;
 
-    console.log("User disconnected");
-  });
+            allSockets.forEach(user => {
+                if (user.room === currentUser.room) {
+                    user.socket.send(
+                        parsedMessage.payload.message
+                    );
+                }
+            });
+        }
+    });
+
+    socket.on("close", () => {
+        allSockets = allSockets.filter(
+            user => user.socket !== socket
+        );
+    });
 });
 
-console.log("Server is running on ws://localhost:5000");
+console.log("WebSocket Server Running on 8080");
