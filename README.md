@@ -82,7 +82,7 @@ ws://localhost:8080
 {
   "type": "join",
   "payload": {
-    "roomId": "red"
+    "roomId": "purple"
   }
 }
 ```
