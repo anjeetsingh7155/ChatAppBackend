@@ -14,7 +14,12 @@ import type { AuthRequest } from "./middleware/auth.js";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://studyspace-wine.vercel.app/",
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Connect to MongoDB
