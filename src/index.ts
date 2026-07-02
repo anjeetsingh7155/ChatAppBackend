@@ -99,6 +99,13 @@ app.get("/api/messages/:room", authMiddleware, async (req: AuthRequest, res: exp
   }
 });
 
+
+app.get("/",(req: express.Request, res: express.Response)=>{
+
+  res.send("Backend is started")
+})
+
+
 // Setup HTTP server
 const server = http.createServer(app);
 
