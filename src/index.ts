@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: "https://studyspace-wine.vercel.app/",
+    origin: "https://studyspace-wine.vercel.app",
     credentials: true,
   })
 );
@@ -212,3 +212,5 @@ const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
   console.log(`Express and WebSocket server running on port ${PORT}`);
 });
+
+export default app;
