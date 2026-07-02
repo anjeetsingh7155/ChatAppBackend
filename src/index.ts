@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 app.use(
   cors({
-    origin: "https://studyspace-wine.vercel.app",
+    origin: "https://study-space-phi.vercel.app",
     credentials: true,
   })
 );
